@@ -2,14 +2,14 @@ from dotenv import load_dotenv
 import os 
 import psycopg2
 
-def connect_to_database():
+def connect_to_database(args):
     try:
         conn = psycopg2.connect(
-            host=DB_HOST,
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            port=DB_PORT
+            host=args['DB_HOST'],
+            dbname=args['DB_NAME'],
+            user=args['DB_USER'],
+            password=args['DB_PASSWORD'],
+            port=args['DB_PORT']
         )
         cursor = conn.cursor()
         
@@ -53,7 +53,13 @@ if __name__ == "__main__":
     DB_PASSWORD = os.getenv("DB_PASSWORD")
 
     #connect to database
-    db_conn, db_cursor = connect_to_database()
+    db_conn, db_cursor = connect_to_database({
+        'DB_HOST':DB_HOST,
+        'DB_PORT':DB_PORT,
+        'DB_NAME':DB_NAME,
+        'DB_USER':DB_USER,
+        'DB_PASSWORD':DB_PASSWORD,
+    })
     
     if db_conn and db_cursor:
         #create_table
